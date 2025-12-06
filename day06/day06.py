@@ -23,7 +23,36 @@ def day06(lines: list[str]) -> int:
     return result
 
 
+def day06_part2(lines: list[str]) -> int:
+    result = 0
+    numbers = []
+    columns = 0
+    for line in lines:
+        columns = max(columns, len(line))
+
+    for column in range(columns - 1, -1, -1):
+        cleaned = [line[column] for line in lines if column < len(line) and line[column] != ' ']
+        if cleaned:
+            num, op = 0, ''
+            for element in cleaned:
+                if element.isdigit():
+                    num = (num * 10) + int(element)
+                elif element == '+' or element == '*':
+                    op = element
+
+            numbers.append(num)
+            if op == '*':
+                result += reduce(operator.mul, numbers)
+                numbers = []
+            elif op == '+':
+                result += reduce(operator.add, numbers)
+                numbers = []
+
+    return result
+
+
 if __name__ == "__main__":
     with open('input', 'r') as f:
         lines = [line.strip() for line in f]
         print(day06(lines))
+        print(day06_part2(lines))
