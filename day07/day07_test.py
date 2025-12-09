@@ -3,7 +3,7 @@ import unittest
 from day07.day07 import day07, day07_part2
 
 
-class MyTestCase(unittest.TestCase):
+class Day07TestCase(unittest.TestCase):
     def setUp(self):
         self.lines = [
             '.......S.......',
