@@ -6,7 +6,6 @@ def fewest_button_presses(desired_lights: set[int], buttons: list[set[int]]) -> 
     queue = deque([([], set())])
     while queue:
         path, lights = queue.popleft()
-        seen.add(tuple(lights))
 
         if lights == desired_lights:
             return len(path)
@@ -14,6 +13,7 @@ def fewest_button_presses(desired_lights: set[int], buttons: list[set[int]]) -> 
             for button in buttons:
                 new_lights = lights ^ button
                 if tuple(new_lights) not in seen:
+                    seen.add(tuple(new_lights))
                     queue.append((path + [lights], new_lights))
 
     return -1
@@ -42,7 +42,52 @@ def day10(lines: list[str]) -> int:
     return total
 
 
+def fewest_button_presses_part2(desired_counters: list[int], buttons: list[set[int]]) -> int:
+    seen = set()
+    queue = deque([(0, [0 for _ in desired_counters])])
+    while queue:
+        length, counters = queue.popleft()
+
+        if counters == desired_counters:
+            return length
+        elif all(counters[i] <= desired_counters[i] for i in range(len(desired_counters))):
+            for button in buttons:
+                new_counters = counters[:]
+                for i in button:
+                    new_counters[i] += 1
+
+                tuple1 = tuple(new_counters)
+                if tuple1 not in seen:
+                    seen.add(tuple1)
+                    queue.append((length + 1, new_counters))
+
+    return -1
+
+
+def day10_part2(lines: list[str]) -> int:
+    total = 0
+    for i, line in enumerate(lines):
+        print(f"On line {i + 1} of {len(lines)}")
+
+        _, *schematics, desired_counters_str = line.split(' ')
+
+        buttons = []
+        for schematic_str in schematics:
+            schematic = eval(schematic_str)
+            if type(schematic) is tuple:
+                buttons.append(set(schematic))
+            else:
+                buttons.append({schematic})
+
+        desired_counters = list(map(int, desired_counters_str[1:-1].split(',')))
+
+        total += fewest_button_presses_part2(desired_counters, buttons)
+
+    return total
+
+
 if __name__ == "__main__":
     with open('input', 'r') as f:
         lines = [line.strip() for line in f]
         print(day10(lines))
+        print(day10_part2(lines))

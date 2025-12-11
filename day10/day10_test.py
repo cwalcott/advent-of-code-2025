@@ -1,6 +1,6 @@
 import unittest
 
-from day10.day10 import day10, fewest_button_presses
+from day10.day10 import day10, fewest_button_presses, fewest_button_presses_part2, day10_part2
 
 
 class Day10TestCase(unittest.TestCase):
@@ -40,6 +40,25 @@ class Day10TestCase(unittest.TestCase):
 
     def test_part1(self):
         self.assertEqual(7, day10(self.lines))
+
+    def test_fewest_button_presses_part2(self):
+        self.assertEqual(10, fewest_button_presses_part2([3, 5, 4, 7], [{3}, {1, 3}, {2}, {2, 3}, {0, 2}, {0, 1}]))
+
+    def test_fewest_button_presses_part2_2(self):
+        self.assertEqual(
+            12,
+            fewest_button_presses_part2([7, 5, 12, 7, 2], [{0, 2, 3, 4}, {2, 3}, {0, 4}, {0, 1, 2}, {1, 2, 3, 4}]))
+
+    def test_fewest_button_presses_part2_3(self):
+        self.assertEqual(
+            0,
+            fewest_button_presses_part2(
+                [36, 63, 29, 56, 28, 48, 43, 52, 23],
+                [{0, 1, 3, 4, 6, 7, 8}, {1, 2, 3, 5, 6, 8}, {0, 1}, {3, 5, 6, 7}, {2, 5, 7}, {1, 2, 3, 4, 5, 7, 8}, {7},
+                 {0, 1, 3}, {0, 3, 7}, {1, 4, 6}]))
+
+    def test_part2(self):
+        self.assertEqual(33, day10_part2(self.lines))
 
 
 if __name__ == '__main__':
