@@ -41,6 +41,9 @@ class Day10TestCase(unittest.TestCase):
     def test_part1(self):
         self.assertEqual(7, day10(self.lines))
 
+    def test_fewest_button_presses_part2_simple(self):
+        self.assertEqual(2, fewest_button_presses_part2([2, 2], [{0}, {1}, {0, 1}]))
+
     def test_fewest_button_presses_part2(self):
         self.assertEqual(10, fewest_button_presses_part2([3, 5, 4, 7], [{3}, {1, 3}, {2}, {2, 3}, {0, 2}, {0, 1}]))
 

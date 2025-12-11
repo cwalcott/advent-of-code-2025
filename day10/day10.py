@@ -43,25 +43,37 @@ def day10(lines: list[str]) -> int:
 
 
 def fewest_button_presses_part2(desired_counters: list[int], buttons: list[set[int]]) -> int:
-    seen = set()
-    queue = deque([(0, [0 for _ in desired_counters])])
-    while queue:
-        length, counters = queue.popleft()
+    memo = {}
 
-        if counters == desired_counters:
-            return length
-        elif all(counters[i] <= desired_counters[i] for i in range(len(desired_counters))):
+    def dfs(counters):
+        nonlocal memo
+
+        key = tuple(counters)
+        if key in memo:
+            return memo[key]
+
+        if all(c == 0 for c in counters):
+            memo[key] = 0
+        else:
+            shortest = float('inf')
+
             for button in buttons:
                 new_counters = counters[:]
                 for i in button:
-                    new_counters[i] += 1
+                    new_counters[i] -= 1
 
-                tuple1 = tuple(new_counters)
-                if tuple1 not in seen:
-                    seen.add(tuple1)
-                    queue.append((length + 1, new_counters))
+                if all(c >= 0 for c in new_counters):
+                    shortest = min(shortest, dfs(new_counters) + 1)
 
-    return -1
+            memo[key] = shortest
+
+        return memo[key]
+
+    result = dfs(desired_counters)
+    if type(result) is int:
+        return result
+    else:
+        return -1
 
 
 def day10_part2(lines: list[str]) -> int:
